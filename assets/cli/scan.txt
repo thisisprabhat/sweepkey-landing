@@ -1,0 +1,9 @@
+$ sweepkey scan ~/Projects
+Project         Ecosystems             Reclaimable  Last activity
+--------------  ---------------------  -----------  -------------
+web-dashboard   JavaScript/TypeScript      70.0 MB  today
+rust-cli        Rust                       64.0 MB  today
+flutter_shop    Flutter/Dart               36.0 MB  today
+ml-experiments  Python                     30.0 MB  today
+
+4 project(s), 200.0 MB reclaimable.

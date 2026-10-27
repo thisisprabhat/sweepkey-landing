@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /downloads/
+
+Sitemap: https://sweepkey.waygosquad.tech/sitemap-index.xml

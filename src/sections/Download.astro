@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import CopyButton from '../components/CopyButton.astro';
+import DownloadButton from '../components/DownloadButton.astro';
+import { release } from '../data/release';
+import { BREW_COMMAND, LATEST_RELEASE_URL, RELEASES_URL, REPO_URL } from '../data/site';
+import icon from '../assets/brand/icon-512.png';
+---
+
+<section class="section download-section" id="download" aria-labelledby="download-title">
+  <div class="page get">
+    <Image class="get__icon" src={icon} alt="" width={160} height={160} />
+    <div class="get__main">
+      <h2 id="download-title">Get Sweepkey</h2>
+      <DownloadButton large />
+      {
+        release && (
+          <p class="get__after">
+            Open the DMG and drag Sweepkey to Applications. On first launch, Sweepkey walks you through choosing
+            project folders and Full Disk Access.
+          </p>
+        )
+      }
+    </div>
+
+    <dl class="get__details">
+      <div>
+        <dt>Homebrew</dt>
+        <dd>
+          <span class="command"><code>{BREW_COMMAND}</code><CopyButton text={BREW_COMMAND} label="Copy Homebrew command" /></span>
+          <p>Installs the app and puts <code>sweepkey</code> on your PATH.</p>
+        </dd>
+      </div>
+      {
+        release && (
+          <div>
+            <dt>SHA-256</dt>
+            <dd>
+              <span class="command" title={`Sweepkey-${release.version}.dmg`}>
+                <code class="get__sha">{release.sha256}</code>
+                <CopyButton text={release.sha256} label="Copy checksum" />
+              </span>
+              <p>Verify with <code>shasum -a 256 ~/Downloads/{release.dmgName}</code></p>
+            </dd>
+          </div>
+        )
+      }
+      <div>
+        <dt>Other downloads</dt>
+        <dd>
+          <ul class="get__links">
+            {release && <li><a href={release.cliZipUrl}>Command-line tool only (sweepkey-{release.version}-macos.zip)</a></li>}
+            {release && <li><a href={release.notesUrl}>Release notes for {release.version}</a></li>}
+            <li><a href={release ? RELEASES_URL : LATEST_RELEASE_URL}>All releases</a></li>
+            <li><a href={REPO_URL}>Source code on GitHub</a></li>
+          </ul>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .download-section {
+    background: radial-gradient(70% 90% at 50% 0%, var(--accent-soft), transparent 70%), var(--bg-band);
+    border-top: 1px solid var(--line);
+  }
+
+  .get {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-6) var(--space-7);
+    align-items: center;
+  }
+
+  .get :global(.get__icon) {
+    width: clamp(96px, 14vw, 160px);
+    height: auto;
+    filter: drop-shadow(0 18px 30px rgb(0 0 0 / 0.35));
+  }
+
+  .get__main {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  .get__main h2 {
+    font-size: var(--step-4);
+  }
+
+  .get__after {
+    color: var(--ink-muted);
+    max-width: 36em;
+  }
+
+  .get__details {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin: var(--space-5) 0 0;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .get__details dt {
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+  }
+
+  .get__details > div {
+    min-width: 0;
+  }
+
+  .get__details dd {
+    margin: 0;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  .get__details .command {
+    width: 100%;
+  }
+
+  .get__sha {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .get__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  @media (max-width: 860px) {
+    .get {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .get__details {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

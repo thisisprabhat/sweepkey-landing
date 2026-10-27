@@ -1,0 +1,24 @@
+---
+// Ecosystem logo from public/logos (Simple Icons, CC0). Logos whose brand colour is too dark or
+// too light for one theme ship a "-dark" variant, swapped by theme.
+import { logoHasDarkVariant } from '../data/logos';
+
+interface Props {
+  id: string;
+  size?: number;
+  alt?: string;
+}
+
+const { id, size = 20, alt = '' } = Astro.props;
+---
+
+{
+  logoHasDarkVariant(id) ? (
+    <>
+      <img class="only-light" src={`/logos/${id}.svg`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
+      <img class="only-dark" src={`/logos/${id}-dark.svg`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
+    </>
+  ) : (
+    <img src={`/logos/${id}.svg`} alt={alt} width={size} height={size} loading="lazy" decoding="async" />
+  )
+}

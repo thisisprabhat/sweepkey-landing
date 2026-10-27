@@ -1,0 +1,308 @@
+---
+import CopyButton from '../components/CopyButton.astro';
+import Icon from '../components/Icon.astro';
+import { CLI_DOCS_URL } from '../data/site';
+import scanText from '../assets/cli/scan.txt?raw';
+import cleanText from '../assets/cli/clean-dry-run.txt?raw';
+import vaultText from '../assets/cli/vault-collect.txt?raw';
+
+// Real output of the sweepkey CLI against a demo folder (assets/cli), paths rewritten to ~/Projects.
+const transcripts = [
+  { id: 'scan', label: 'scan', text: scanText },
+  { id: 'clean', label: 'clean --dry-run', text: cleanText },
+  { id: 'vault', label: 'vault collect', text: vaultText },
+].map((t) => {
+  const [first, ...rest] = t.text.trimEnd().split('\n');
+  return { ...t, command: first.replace(/^\$ /, ''), output: rest.join('\n') };
+});
+
+const reference = `sweepkey scan [paths...] [--json] [--stale-only] [--min-size 100MB]
+sweepkey clean [paths...] [--dry-run] [--trash] [--stale-only] [--rule <id>]... [--yes] [--skip-vault]
+sweepkey caches [--json]
+sweepkey caches clean <group-id>... [--dry-run] [--yes]
+sweepkey vault collect <paths...> --to <dest> [--format folder|zip|dmg] [--uncommitted] [--scan-contents]
+sweepkey vault restore <vault> [--by-remote <searchRoot>...] [--overwrite] [--dry-run]
+sweepkey history [--json]`;
+---
+
+<section class="section section--band" id="cli" aria-labelledby="cli-title">
+  <div class="page cli">
+    <div class="cli__copy">
+      <h2 id="cli-title">The same engine, scriptable.</h2>
+      <p class="lede">
+        The <code>sweepkey</code> command ships inside the app (Homebrew puts it on your PATH) and as a standalone
+        zip in every release. Plan with <code>--dry-run</code>, read <code>--json</code>, and use it in scripts.
+      </p>
+      <p class="cli__fine">
+        Exit codes: <code>0</code> ok, <code>1</code> error, <code>2</code> nothing to do. <code>clean</code> asks
+        before deleting unless you pass <code>--yes</code>.
+      </p>
+      <a href={CLI_DOCS_URL}>Read the CLI reference</a>
+    </div>
+
+    <div class="terminal" data-terminal>
+      <div class="terminal__bar">
+        <span class="terminal__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="terminal__chips" role="group" aria-label="Commands">
+          {
+            transcripts.map((t, i) => (
+              <button type="button" data-chip={t.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+                {t.label}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+      {
+        transcripts.map((t, i) => (
+          <div class="terminal__screen" data-screen={t.id} hidden={i !== 0}>
+            <div class="terminal__prompt">
+              <pre><span class="terminal__dollar" aria-hidden="true">$ </span><code data-command>{t.command}</code></pre>
+              <CopyButton text={t.command} label={`Copy: ${t.command}`} />
+            </div>
+            <pre class="terminal__output" data-output>{t.output}</pre>
+          </div>
+        ))
+      }
+    </div>
+
+    <details class="cli__reference">
+      <summary><Icon name="terminal" />All commands</summary>
+      <pre><code>{reference}</code></pre>
+    </details>
+  </div>
+</section>
+
+<style>
+  .cli {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: var(--space-7) clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .cli__copy {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .cli__copy .lede {
+    font-size: var(--step-0);
+  }
+
+  .cli__fine {
+    color: var(--ink-faint);
+    font-size: var(--step--1);
+  }
+
+  .terminal {
+    border-radius: var(--radius-l);
+    background: #0b0d22;
+    color: #dfe3ff;
+    border: 1px solid rgb(242 244 255 / 0.12);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  .terminal__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid rgb(242 244 255 / 0.08);
+  }
+
+  .terminal__dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .terminal__dots i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: rgb(242 244 255 / 0.18);
+  }
+
+  .terminal__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .terminal__chips button {
+    padding: 0.25rem 0.65rem;
+    border: 1px solid rgb(242 244 255 / 0.12);
+    border-radius: 999px;
+    background: none;
+    color: #a7add6;
+    font: 500 0.78rem/1.3 var(--font-mono);
+    cursor: pointer;
+  }
+
+  .terminal__chips button[aria-pressed='true'] {
+    background: rgb(62 230 181 / 0.14);
+    border-color: rgb(62 230 181 / 0.5);
+    color: #3ee6b5;
+  }
+
+  .terminal__screen {
+    padding: 1rem 1.1rem 1.3rem;
+    min-height: 22rem;
+  }
+
+  .terminal pre {
+    margin: 0;
+    white-space: pre;
+    overflow-x: auto;
+    font: inherit;
+    line-height: 1.55;
+  }
+
+  .terminal__prompt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: 0.6rem;
+  }
+
+  .terminal__prompt code {
+    color: #ffffff;
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  .terminal__dollar {
+    color: #3ee6b5;
+  }
+
+  .terminal__output {
+    color: #a7add6;
+  }
+
+  .terminal [data-typing] code::after {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 1.1em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    background: #3ee6b5;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .terminal :global(.copy-button) {
+    background: rgb(242 244 255 / 0.06);
+    border-color: rgb(242 244 255 / 0.12);
+    color: #a7add6;
+  }
+
+  .cli__reference {
+    grid-column: 1 / -1;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 0.2rem 1rem;
+  }
+
+  .cli__reference summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 0;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .cli__reference summary :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .cli__reference pre {
+    margin: 0 0 1rem;
+    overflow-x: auto;
+    font: 0.82rem/1.7 var(--font-mono);
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 980px) {
+    .cli {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
+
+<script>
+  // Types the command, then reveals the output line by line. Runs once per screen, when it scrolls into view.
+  const terminal = document.querySelector<HTMLElement>('[data-terminal]');
+  if (terminal) setUpTerminal(terminal);
+
+  function setUpTerminal(root: HTMLElement) {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const played = new Set<string>();
+    const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-chip]')];
+    const screens = [...root.querySelectorAll<HTMLElement>('[data-screen]')];
+    let run = 0;
+
+    async function play(screen: HTMLElement) {
+      const id = screen.dataset.screen!;
+      if (reduced || played.has(id)) return;
+      played.add(id);
+      const token = ++run;
+      const command = screen.querySelector<HTMLElement>('[data-command]')!;
+      const output = screen.querySelector<HTMLElement>('[data-output]')!;
+      const fullCommand = command.textContent ?? '';
+      const lines = (output.textContent ?? '').split('\n');
+      const prompt = command.closest('pre')!;
+      const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      output.textContent = '';
+      command.textContent = '';
+      prompt.setAttribute('data-typing', '');
+      for (const ch of fullCommand) {
+        if (token !== run) return finish();
+        command.textContent += ch;
+        await sleep(28);
+      }
+      prompt.removeAttribute('data-typing');
+      await sleep(250);
+      for (const line of lines) {
+        if (token !== run) return finish();
+        output.textContent += (output.textContent ? '\n' : '') + line;
+        await sleep(55);
+      }
+      function finish() {
+        command.textContent = fullCommand;
+        output.textContent = lines.join('\n');
+        prompt.removeAttribute('data-typing');
+      }
+    }
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        for (const c of chips) c.setAttribute('aria-pressed', String(c === chip));
+        for (const s of screens) s.hidden = s.dataset.screen !== chip.dataset.chip;
+        const screen = screens.find((s) => s.dataset.screen === chip.dataset.chip);
+        if (screen) play(screen);
+      });
+    }
+
+    new IntersectionObserver((entries, observer) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      observer.disconnect();
+      const visible = screens.find((s) => !s.hidden);
+      if (visible) play(visible);
+    }, { threshold: 0.4 }).observe(root);
+  }
+</script>

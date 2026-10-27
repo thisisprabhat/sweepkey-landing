@@ -1,0 +1,9 @@
+$ sweepkey vault collect ~/Projects --to ~/Vault
+File                                          Why              Size
+--------------------------------------------  -------------  ------
+Projects/flutter_shop/android/key.properties  ignoredMatch     19 B
+Projects/flutter_shop/android/upload.jks      ignoredMatch   1.0 MB
+Projects/flutter_shop/pubspec.yaml            alwaysCollect    19 B
+Projects/web-dashboard/.env.local             ignoredMatch     13 B
+
+Vault written to ~/Vault: 4 copied, 0 unchanged.

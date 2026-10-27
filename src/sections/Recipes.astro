@@ -1,0 +1,112 @@
+---
+// Titles, "when" lines and steps are verbatim from the app (App/Features/Recipes/RecipesView.swift).
+const recipes = [
+  {
+    title: 'Free Up Space',
+    when: 'Your disk is nearly full and you need a set amount of space back.',
+    steps: ['Pick how much space you need', 'Sweepkey plans the safest items first', 'Review the plan, then clean'],
+  },
+  {
+    title: 'Archive a Project',
+    when: "You're done with a project but want to keep it.",
+    steps: ["Save the project's secrets to a vault", 'Delete its rebuildable folders', 'Optionally zip it and trash the original'],
+  },
+  {
+    title: 'Move to a New Mac',
+    when: "You're setting up another Mac and want your projects and secrets there.",
+    steps: ['Collect secrets from all projects', 'List every git repo and where it lives', 'Run restore.sh on the new Mac'],
+  },
+];
+---
+
+<section class="section" id="recipes" aria-labelledby="recipes-title">
+  <div class="page">
+    <div class="section-head">
+      <h2 id="recipes-title">Guided jobs for common situations.</h2>
+      <p class="lede">
+        Each recipe combines cleaning and the vault, plans everything first, and shows you the result before
+        anything is deleted.
+      </p>
+    </div>
+    <div class="recipes">
+      {
+        recipes.map((recipe) => (
+          <article class="recipe">
+            <h3>{recipe.title}</h3>
+            <p class="recipe__when">{recipe.when}</p>
+            <ol>
+              {recipe.steps.map((step) => <li>{step}</li>)}
+            </ol>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .recipes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-block: 1px solid var(--line);
+  }
+
+  .recipe {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-6) var(--space-6) 0;
+  }
+
+  .recipe + .recipe {
+    padding-left: var(--space-6);
+    border-left: 1px solid var(--line);
+  }
+
+  .recipe h3 {
+    font-size: var(--step-2);
+  }
+
+  .recipe__when {
+    color: var(--ink-muted);
+  }
+
+  .recipe ol {
+    display: grid;
+    gap: var(--space-2);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .recipe li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 1.6rem 1fr;
+    gap: var(--space-2);
+  }
+
+  .recipe li::before {
+    content: counter(step);
+    font: 700 0.95rem/1.6 var(--font-display);
+    color: var(--accent);
+  }
+
+  @media (max-width: 860px) {
+    .recipes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .recipe,
+    .recipe + .recipe {
+      padding: var(--space-6) 0;
+      border-left: 0;
+    }
+
+    .recipe + .recipe {
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

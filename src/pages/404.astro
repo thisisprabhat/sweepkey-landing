@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found · Sweepkey" jsonLd={false} noindex>
+  <section class="missing page">
+    <h1>Swept away.</h1>
+    <p class="lede">This page could be rebuilt, but we couldn't find it.</p>
+    <a class="button button--primary" href="/">Back to Sweepkey</a>
+  </section>
+</Base>
+
+<style>
+  .missing {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+    padding-block: var(--space-9);
+    min-height: 60vh;
+    align-content: center;
+  }
+
+  .missing h1 {
+    font-size: var(--step-4);
+  }
+</style>

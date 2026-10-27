@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { REPO_URL } from '../data/site';
+import icon from '../assets/brand/icon-128.png';
+
+const links = [
+  { href: '/#features', label: 'Features' },
+  { href: '/#safety', label: 'Safety' },
+  { href: '/#cli', label: 'CLI' },
+  { href: '/#faq', label: 'FAQ' },
+];
+---
+
+<header class="nav">
+  <nav class="nav__inner page" aria-label="Main">
+    <a class="nav__brand" href="/" aria-label="Sweepkey home">
+      <Image src={icon} alt="" width={30} height={30} loading="eager" />
+      <span>Sweepkey</span>
+    </a>
+    <ul class="nav__links">
+      {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+    </ul>
+    <div class="nav__actions">
+      <a class="nav__icon" href={REPO_URL} aria-label="Sweepkey on GitHub"><Icon name="github" /></a>
+      <button class="nav__icon" type="button" data-theme-toggle aria-label="Switch to light theme">
+        <Icon name="sun" class="only-dark" />
+        <Icon name="moon" class="only-light" />
+      </button>
+      <a class="button button--primary nav__download" href="/#download">
+        <Icon name="download" />Download
+      </a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    min-height: 4rem;
+  }
+
+  .nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font: 750 1.2rem/1 var(--font-display);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav__links {
+    display: flex;
+    gap: var(--space-5);
+    margin: 0 0 0 var(--space-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav__links a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .nav__links a:hover {
+    color: var(--ink);
+  }
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+  }
+
+  .nav__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--ink-muted);
+    cursor: pointer;
+  }
+
+  .nav__icon:hover {
+    color: var(--ink);
+    background: var(--bg-raised);
+  }
+
+  .nav__icon :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+
+  .nav__download {
+    min-height: 2.4rem;
+    padding: 0.5rem 1rem;
+    margin-left: var(--space-2);
+  }
+
+  @media (max-width: 760px) {
+    .nav__links {
+      display: none;
+    }
+  }
+
+  /* Small phones: GitHub stays in the footer, so its icon makes room for Download. */
+  @media (max-width: 420px) {
+    .nav__inner {
+      gap: var(--space-3);
+    }
+
+    .nav__actions a.nav__icon {
+      display: none;
+    }
+
+    .nav__download {
+      margin-left: 0;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const label = () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    toggle?.setAttribute('aria-label', `Switch to ${next} theme`);
+  };
+  label();
+  toggle?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('sweepkey-theme', next);
+    } catch {}
+    label();
+  });
+</script>

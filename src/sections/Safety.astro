@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../components/Icon.astro';
+import confirmLight from '../assets/screenshots/light/clean-confirm.png';
+import confirmDark from '../assets/screenshots/dark/clean-confirm.png';
+
+// Docs/03 S6, checked against the app's README safety model and docs/03-safety.md.
+const rules = [
+  ['Dry run first', "Nothing is deleted until you've seen the full list and total size and confirmed. The CLI has --dry-run and won't run unattended without --yes."],
+  ['Git-tracked guard', "A folder that contains any git-tracked file is skipped, so a build/ or dist/ you committed on purpose stays put. If git can't answer, the folder is skipped."],
+  ['Never follows symlinks', 'Symlinks are never followed, and hard links are counted once.'],
+  ['Move to Trash or delete', 'Delete permanently or move to the Trash, per run or as your default. Trash runs can be undone with Put Back.'],
+  ['Path guards', 'Nothing outside your scan roots is removed. Your scan roots, your home folder, / and system folders never are.'],
+  ['Pinned and active projects', "Pin a project or exclude a path and it's never offered. You're warned when a project looks open in an editor or terminal."],
+  ['Risk levels', 'Every item is Safe, Caution or Danger. Danger needs an extra confirmation.'],
+  ['Vault before clean', 'Optionally require a vault export before cleaning. If the export fails, nothing is deleted.'],
+];
+---
+
+<section class="section" id="safety" aria-labelledby="safety-title">
+  <div class="page safety">
+    <div class="section-head">
+      <h2 id="safety-title">Conservative by design.</h2>
+      <p class="lede">Sweepkey deletes files, so it treats every folder as important until it's sure it can be rebuilt.</p>
+    </div>
+    <ul class="safety__list">
+      {
+        rules.map(([title, text]) => (
+          <li>
+            <Icon name="check" />
+            <div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <figure class="safety__shot">
+      <div class="window">
+        <Image class="only-light" src={confirmLight} alt="The confirmation sheet: each item with its path, risk badge and size, a total, Move to Trash or Delete permanently, and Dry Run or Clean." widths={[800, 1280, 2000]} sizes="(max-width: 1180px) 94vw, 1000px" loading="lazy" />
+        <Image class="only-dark" src={confirmDark} alt="The confirmation sheet: each item with its path, risk badge and size, a total, Move to Trash or Delete permanently, and Dry Run or Clean." widths={[800, 1280, 2000]} sizes="(max-width: 1180px) 94vw, 1000px" loading="lazy" />
+      </div>
+      <figcaption>"Sweepkey never deletes anything without your confirmation." Every clean ends on this sheet.</figcaption>
+    </figure>
+    <p class="safety__small">
+      Sizes are shown as "up to" because APFS clones may share blocks. Unattended cleans (menu bar, schedule,
+      Shortcuts) only touch Safe folders in stale projects, never global caches.
+    </p>
+  </div>
+</section>
+
+<style>
+  .safety__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) clamp(2rem, 5vw, 4.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .safety__list li {
+    display: grid;
+    grid-template-columns: 1.6rem 1fr;
+    gap: var(--space-3);
+  }
+
+  .safety__list :global(svg) {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-top: 0.15rem;
+    color: var(--accent);
+    stroke-width: 2.4;
+  }
+
+  .safety__list h3 {
+    margin-bottom: var(--space-1);
+  }
+
+  .safety__list p {
+    color: var(--ink-muted);
+  }
+
+  .safety__shot {
+    margin: var(--space-8) auto 0;
+    max-width: 1000px;
+  }
+
+  .safety__shot figcaption {
+    margin-top: var(--space-4);
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: var(--step--1);
+  }
+
+  .safety__small {
+    margin-top: var(--space-7);
+    max-width: 50em;
+    color: var(--ink-faint);
+    font-size: var(--step--1);
+  }
+
+  @media (max-width: 760px) {
+    .safety__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

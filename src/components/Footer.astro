@@ -1,0 +1,107 @@
+---
+import { CONTRIBUTING_URL, ISSUES_URL, LICENSE_URL, RELEASES_URL, REPO_URL, TAGLINE } from '../data/site';
+---
+
+<footer class="footer">
+  <div class="page footer__inner">
+    <div class="footer__about">
+      <p class="footer__tagline">{TAGLINE}</p>
+      <p>This site sets no cookies and uses no tracking. The app has no telemetry: your files never leave your Mac unless you export them.</p>
+    </div>
+    <nav aria-label="Product">
+      <h2>Product</h2>
+      <ul>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#safety">Safety</a></li>
+        <li><a href="/#cli">CLI</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/#download">Download</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Project">
+      <h2>Project</h2>
+      <ul>
+        <li><a href={REPO_URL}>GitHub</a></li>
+        <li><a href={RELEASES_URL}>Releases</a></li>
+        <li><a href={ISSUES_URL}>Issues</a></li>
+        <li><a href={CONTRIBUTING_URL}>Contributing</a></li>
+        <li><a href={LICENSE_URL}>Licence (MIT)</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="page footer__legal">
+    <p>
+      Ecosystem logos are from Simple Icons (CC0) and remain trademarks of their respective owners; their use does not imply endorsement.
+      Apple, Mac, macOS and Xcode are trademarks of Apple Inc. Sweepkey is not affiliated with Apple.
+    </p>
+    <p>© 2026 Prabhat Kumar. Released under the MIT licence.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: var(--space-8) var(--space-6);
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--space-7);
+  }
+
+  .footer__tagline {
+    font: 700 var(--step-2) / 1.1 var(--font-display);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: var(--space-4);
+    max-width: 14em;
+  }
+
+  .footer h2 {
+    font: 600 1rem/1.2 var(--font-text);
+    letter-spacing: 0;
+    color: var(--ink);
+    margin-bottom: var(--space-3);
+  }
+
+  .footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .footer a {
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .footer__legal {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--line);
+    font-size: var(--step--1);
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 760px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer__about {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

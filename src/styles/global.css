@@ -1,0 +1,353 @@
+/* Tokens: light, Mac-native by default; dark mode is neutral graphite like macOS itself, so the
+   app screenshots sit on the same greys they were taken on. Indigo is the accent; mint is kept
+   for the sweep (the demo and "freed" numbers). */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-raised: #ffffff;
+  --bg-sunk: #f5f5f7;
+  --bg-band: #fbfbfd;
+  --line: rgb(0 0 0 / 0.08);
+  --line-strong: rgb(0 0 0 / 0.16);
+  --ink: #1d1d1f;
+  --ink-muted: #5e5e66;
+  --ink-faint: #7c7c85;
+  --accent: #3f49b4;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(63 73 180 / 0.08);
+  --indigo-deep: #3f49b4;
+  --mint: #19b98a;
+  --mint-ink: #ffffff;
+  --caution: #a8690a;
+  --danger: #c23b3b;
+  --tile: #eceef8;
+  --tile-hover: #dfe2f4;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 24px 60px rgb(20 23 57 / 0.12);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #1c1c1e;
+  --bg-raised: #2c2c2e;
+  --bg-sunk: #161618;
+  --bg-band: #19191b;
+  --line: rgb(255 255 255 / 0.09);
+  --line-strong: rgb(255 255 255 / 0.18);
+  --ink: #f5f5f7;
+  --ink-muted: #a1a1a8;
+  --ink-faint: #8a8a93;
+  --accent: #7c84ff;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(124 132 255 / 0.12);
+  --indigo-deep: #4b55c8;
+  --mint: #3ee6b5;
+  --mint-ink: #0b2e25;
+  --caution: #f5b83d;
+  --danger: #ff7a7a;
+  --tile: #3a3a3c;
+  --tile-hover: #48484b;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 24px 60px rgb(0 0 0 / 0.45);
+}
+
+:root {
+  --font-display: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --font-text: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono Variable', Menlo, monospace;
+
+  /* Type scale (1.25 ratio from a 17px body) */
+  --step--1: 0.85rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.33rem;
+  --step-2: clamp(1.6rem, 1.2rem + 1.4vw, 2.1rem);
+  --step-3: clamp(2.1rem, 1.4rem + 2.6vw, 3.2rem);
+  --step-4: clamp(2.7rem, 1.6rem + 4.4vw, 5.1rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-l: 20px;
+  --page: min(1180px, 100% - 2 * clamp(16px, 4vw, 40px));
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Components set display (grid, inline-flex); the hidden attribute must still win. */
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--step-3);
+}
+
+h3 {
+  font-size: var(--step-1);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+code,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+
+:not(pre) > code {
+  padding: 0.08em 0.35em;
+  border-radius: var(--radius-s);
+  background: var(--bg-sunk);
+  border: 1px solid var(--line);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.page {
+  width: var(--page);
+  margin-inline: auto;
+}
+
+.lede {
+  color: var(--ink-muted);
+  font-size: var(--step-1);
+  line-height: 1.5;
+  max-width: 38em;
+}
+
+.section {
+  padding-block: var(--space-9);
+}
+
+/* Alternate sections sit on a faint band instead of being split by rules. */
+.section--band {
+  background: var(--bg-band);
+  border-block: 1px solid var(--line);
+}
+
+.section-head {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 44rem;
+  margin-bottom: var(--space-7);
+}
+
+/* Buttons */
+.button {
+  --button-bg: var(--bg-raised);
+  --button-ink: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 2.9rem;
+  padding: 0.7rem 1.3rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--button-bg);
+  color: var(--button-ink);
+  font: 600 1rem/1 var(--font-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out), background-color 0.15s;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button[aria-disabled='true'],
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button--primary {
+  --button-bg: var(--accent);
+  --button-ink: var(--accent-ink);
+  border-color: transparent;
+}
+
+/* Mint is the sweep's colour, used only where something gets swept. */
+.button--sweep {
+  --button-bg: var(--mint);
+  --button-ink: var(--mint-ink);
+  border-color: transparent;
+}
+
+.button--large {
+  min-height: 3.5rem;
+  padding: 0.9rem 1.7rem;
+  font-size: 1.1rem;
+}
+
+.button svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+}
+
+/* Copyable command line */
+.command {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 100%;
+  padding: 0.45rem 0.45rem 0.45rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--bg-sunk);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.command code {
+  overflow-x: auto;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  padding: 0;
+  scrollbar-width: none;
+}
+
+.copy-button {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--bg-raised);
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  color: var(--ink);
+}
+
+.copy-button[data-copied] {
+  color: var(--mint);
+}
+
+.copy-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Mac window frame around screenshots */
+.window {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow), 0 0 0 1px var(--line-strong);
+  background: var(--bg-sunk);
+}
+
+.window img,
+.window video {
+  width: 100%;
+  height: auto;
+}
+
+/* Theme-specific images */
+[data-theme='light'] .only-dark,
+[data-theme='dark'] .only-light {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

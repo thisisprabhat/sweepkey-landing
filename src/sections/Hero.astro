@@ -1,0 +1,115 @@
+---
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { Image } from 'astro:assets';
+import CopyButton from '../components/CopyButton.astro';
+import DownloadButton from '../components/DownloadButton.astro';
+import { BREW_COMMAND, TAGLINE } from '../data/site';
+import icon from '../assets/brand/icon-512.png';
+import dashboardLight from '../assets/screenshots/light/dashboard.png';
+import dashboardDark from '../assets/screenshots/dark/dashboard.png';
+
+// The screen recording, converted by scripts/mov-to-gif.swift and copied to public/video by
+// sync-assets. Until it exists, the window shows the Dashboard screenshot instead.
+const gifPath = join(process.cwd(), 'public', 'video', 'sweepkey-demo.gif');
+const gif = existsSync(gifPath)
+  ? (() => {
+      const header = readFileSync(gifPath).subarray(6, 10); // logical screen width, height (LE)
+      return { src: '/video/sweepkey-demo.gif', width: header.readUInt16LE(0), height: header.readUInt16LE(2) };
+    })()
+  : null;
+const mediaAlt = gif
+  ? "A tour of Sweepkey: the Dashboard's reclaimable space by category, the Caches list, cleanup History, cleaning Rules and Recipes."
+  : "Sweepkey's Dashboard: free disk space, reclaimable space by category and the largest rebuildable folders.";
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="page hero__copy">
+    <Image class="hero__icon" src={icon} alt="" width={112} height={112} loading="eager" />
+    <h1 id="hero-title">
+      {TAGLINE.split('. ').map((line, i, all) => <span>{i < all.length - 1 ? `${line}.` : line}</span>)}
+    </h1>
+    <p class="lede">
+      Sweepkey clears <code>node_modules</code>, <code>DerivedData</code>, build folders and developer caches from
+      your Mac, and keeps your <code>.env</code> files and signing keys safe in a vault before anything is deleted.
+    </p>
+    <DownloadButton large />
+    <span class="command hero__brew"><code>{BREW_COMMAND}</code><CopyButton text={BREW_COMMAND} label="Copy Homebrew command" /></span>
+    <p class="hero__note">Free and open source under the MIT licence.</p>
+  </div>
+
+  <div class="page hero__media">
+    {/* A GIF can't be sharper than its pixels, so the frame never grows past the GIF's width. */}
+    <div class="window" style={gif ? `max-width:${gif.width}px` : undefined}>
+      {
+        gif ? (
+          <img src={gif.src} alt={mediaAlt} width={gif.width} height={gif.height} loading="eager" decoding="async" />
+        ) : (
+          <>
+            <Image class="only-light" src={dashboardLight} alt={mediaAlt} widths={[800, 1280, 2000]} sizes="(max-width: 1180px) 94vw, 1100px" loading="eager" />
+            <Image class="only-dark" src={dashboardDark} alt={mediaAlt} widths={[800, 1280, 2000]} sizes="(max-width: 1180px) 94vw, 1100px" loading="lazy" />
+          </>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 7vw, 6rem) var(--space-8);
+    overflow: hidden;
+  }
+
+  .hero__copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: var(--space-5);
+    text-align: center;
+  }
+
+  .hero__copy > * {
+    max-width: 100%;
+  }
+
+  .hero__copy :global(.hero__icon) {
+    width: clamp(84px, 9vw, 112px);
+    height: auto;
+    filter: drop-shadow(0 14px 24px rgb(0 0 0 / 0.18));
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 1.4rem + 4.4vw, 5.2rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  /* One sentence per line: "Sweep the rebuildable." / "Keep the keys." */
+  h1 span {
+    display: block;
+  }
+
+  .hero__copy .lede {
+    max-width: 34em;
+  }
+
+  .hero__copy :global(.download) {
+    justify-items: center;
+  }
+
+  .hero__note {
+    color: var(--ink-faint);
+    font-size: var(--step--1);
+  }
+
+  .hero__media {
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .hero__media .window {
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+</style>

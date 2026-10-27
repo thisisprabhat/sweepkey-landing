@@ -1,0 +1,21 @@
+$ sweepkey clean ~/Projects --dry-run
+Plan (dry run, permanent):
+Item          Risk     Size  Path                                   Warning
+------------  ----  -------  -------------------------------------  -------
+node_modules  safe  48.0 MB  ~/Projects/web-dashboard/node_modules
+.next         safe  22.0 MB  ~/Projects/web-dashboard/.next
+target        safe  64.0 MB  ~/Projects/rust-cli/target
+build         safe  36.0 MB  ~/Projects/flutter_shop/build
+.venv         safe  30.0 MB  ~/Projects/ml-experiments/.venv
+
+5 item(s), 200.0 MB.
+
+Item          Status    Freed  Message
+------------  ------  -------  -------
+node_modules  dryRun  48.0 MB
+.next         dryRun  22.0 MB
+target        dryRun  64.0 MB
+build         dryRun  36.0 MB
+.venv         dryRun  30.0 MB
+
+Dry run: nothing was deleted. Would free 200.0 MB.

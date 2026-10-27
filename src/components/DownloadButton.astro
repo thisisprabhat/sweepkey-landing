@@ -1,0 +1,78 @@
+---
+import Icon from './Icon.astro';
+import { release } from '../data/release';
+import { REPO_URL, REQUIREMENT } from '../data/site';
+
+interface Props {
+  large?: boolean;
+}
+
+const { large = false } = Astro.props;
+---
+
+<div class="download" data-download>
+  {
+    release ? (
+      <a
+        class:list={['button', 'button--primary', { 'button--large': large }]}
+        href={release.githubUrl}
+        data-download-link
+        aria-label={`Download Sweepkey ${release.version} for Mac (DMG, ${release.sizeLabel})`}
+      >
+        <Icon name="download" />
+        Download for Mac
+      </a>
+    ) : (
+      <span
+        class:list={['button', 'button--primary', { 'button--large': large }]}
+        role="link"
+        aria-disabled="true"
+        data-download-link
+      >
+        <Icon name="download" />
+        Download coming soon
+      </span>
+    )
+  }
+  <p class="download__meta">
+    {
+      release ? (
+        <>Version {release.version}, {release.sizeLabel}, for {REQUIREMENT}.</>
+      ) : (
+        <>
+          The first notarized release is on its way. Watch the <a href={REPO_URL}>GitHub repo</a> to hear when it ships.
+        </>
+      )
+    }
+  </p>
+  {
+    release && !release.notarized && (
+      <p class="download__warning" role="note">
+        Preview build: this DMG is not notarized yet, so macOS will warn when you open it.
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .download {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    max-width: 100%;
+    gap: var(--space-3);
+  }
+
+  .download__meta {
+    color: var(--ink-muted);
+    font-size: var(--step--1);
+  }
+
+  .download__warning {
+    padding: 0.5rem 0.8rem;
+    border-radius: var(--radius-s);
+    border: 1px solid color-mix(in srgb, var(--caution) 45%, transparent);
+    color: var(--caution);
+    font-size: var(--step--1);
+  }
+</style>

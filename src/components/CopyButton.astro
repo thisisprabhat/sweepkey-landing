@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  text: string;
+  label: string;
+}
+
+const { text, label } = Astro.props;
+---
+
+<button type="button" class="copy-button" data-copy={text} aria-label={label} title={label}>
+  <Icon name="copy" class="copy-icon" />
+  <Icon name="check" class="copied-icon" />
+</button>
+
+<style>
+  /* The icons are rendered by Icon.astro, so they need :global to be reached from here. */
+  .copy-button :global(.copied-icon),
+  .copy-button[data-copied] :global(.copy-icon) {
+    display: none;
+  }
+
+  .copy-button[data-copied] :global(.copied-icon) {
+    display: block;
+  }
+</style>
+
+<script>
+  // One listener for every copy button on the page.
+  const status = document.getElementById('copy-status');
+  document.addEventListener('click', async (event) => {
+    const button = (event.target as Element).closest<HTMLButtonElement>('[data-copy]');
+    if (!button) return;
+    try {
+      await navigator.clipboard.writeText(button.dataset.copy ?? '');
+      button.setAttribute('data-copied', '');
+      if (status) status.textContent = 'Copied to the clipboard.';
+      setTimeout(() => button.removeAttribute('data-copied'), 1600);
+    } catch {
+      if (status) status.textContent = 'Copying failed. Select the text and copy it instead.';
+    }
+  });
+</script>

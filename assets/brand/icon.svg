@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Flat web rendition of App/AppIcon.icon (Liquid Glass effects are not reproduced). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3F49B4"/><stop offset="1" stop-color="#141739"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".18"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="shape"><rect x="100" y="100" width="824" height="824" rx="185"/></clipPath>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".35"/></filter>
+  </defs>
+  <g filter="url(#drop)">
+    <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/>
+    <g clip-path="url(#shape)">
+      <g transform="translate(100 100) scale(0.8046875)">
+        <defs>
+    <linearGradient id="k-keyhole" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCE1FF"/>
+    </linearGradient>
+  </defs>
+  
+  <path fill="url(#k-keyhole)" d="M512 268a158 158 0 0 1 86 290.6L640 790a24 24 0 0 1-23.6 28H407.6a24 24 0 0 1-23.6-28L426 558.6A158 158 0 0 1 512 268z"/>
+
+        <defs>
+    <linearGradient id="m-sweep" x1="150" y1="880" x2="900" y2="230" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3EE6B5" stop-opacity="0"/><stop offset=".5" stop-color="#3EE6B5"/><stop offset="1" stop-color="#D2FFF2"/>
+    </linearGradient>
+  </defs>
+  
+  <path d="M150 880 Q470 640 880 262" fill="none" stroke="url(#m-sweep)" stroke-width="92" stroke-linecap="round"/>
+  <path d="M232 946 Q560 760 900 470" fill="none" stroke="url(#m-sweep)" stroke-width="34" stroke-linecap="round" opacity=".75"/>
+
+        
+  <g fill="#E4FFF7">
+    <path d="M820 120 C828 168 846 186 894 194 C846 202 828 220 820 268 C812 220 794 202 746 194 C794 186 812 168 820 120Z"/>
+    <path d="M718 274 C722 298 731 307 755 311 C731 315 722 324 718 348 C714 324 705 315 681 311 C705 307 714 298 718 274Z" opacity=".85"/>
+  </g>
+
+      </g>
+      <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#sheen)"/>
+    </g>
+    <rect x="101" y="101" width="822" height="822" rx="184" fill="none" stroke="#FFFFFF" stroke-opacity=".14" stroke-width="2"/>
+  </g>
+</svg>
